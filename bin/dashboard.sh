@@ -13,8 +13,12 @@ show_disk=false
 show_process=false
 verbose=false
 
+# Set an indicator to check if flags were passed
+no_flags=true
+
 # Parse command-line options
 while getopts "cmdpv" opt; do
+    no_flags=false
     case $opt in
         c)
             show_cpu=true
@@ -37,6 +41,12 @@ while getopts "cmdpv" opt; do
             ;;
     esac
 done 
+
+# Return an error if no flags were passed
+if [ "$no_flags" = true ]; then 
+    echo "Error: no options provided. Usage: $0 [-c] [-m] [-d] [-v]"
+    exit 1
+fi
 
 # Setting environment variables
 export CPU_STOP_WORD="Flags:"
